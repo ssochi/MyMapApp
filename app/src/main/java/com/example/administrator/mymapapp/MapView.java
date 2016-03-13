@@ -79,6 +79,8 @@ public class MapView extends SurfaceView implements Callback {
     Date curDate; //PROCESSING
     Date endDate ;
 
+    BulidingGroup bulidingGroup;
+
 
 
 
@@ -98,6 +100,7 @@ public class MapView extends SurfaceView implements Callback {
 
         try {
             map = new Map(getResources(),R.mipmap.emptymap,(int)WindowWidth,(int)WindowHeight,focus.getX(),focus.getY(),getContext());
+            bulidingGroup = new BulidingGroup();
 
             pengYuanGongYu = new building(getResources(),R.mipmap.text,1350,450,185,295,25,getContext(),"鹏\n远\n公\n寓",true);
             daXueShengHuiGuan = new building(getResources(),R.mipmap.text,308,250,1400,1015,0,getContext(),"大学生会馆",true);
@@ -134,36 +137,40 @@ public class MapView extends SurfaceView implements Callback {
 
 
 
-        add(pengYuanGongYu);
-        add(daXueShengHuiGuan);
-        add(gongXueGuan);
-        add(XinZhenLou);
-        add(chengShiGuangChang);
-        add(XiCaoChang);
-        add(TiYuGuan);
-        add(XiaoHuaYuan);
-        add(DiLiuChanTing);
-        add(XiaoLeiYiHaoLou);
-        add(XiaoLeiErHaoLou);
-        add(DiYiCanTing);
-        add(HuiMingCanTing);
-        add(XiaoLeiSiHaoLou);
-        add(DiSanCanTing);
-        add(XiaoWeiShengShuo);
-        add(YuYanLou);
-        add(DiZhiLou);
-        add(JiChuLou);
-        add(TuShuGuan);
-        add(ZhongHeLou);
-        add(ShiYanLou);
+
+
+        add(pengYuanGongYu,"pengYuanGongYu");
+        add(daXueShengHuiGuan,"daXueShengHuiGuan");
+        add(gongXueGuan,"gongXueGuan");
+        add(XinZhenLou,"XinZhenLou");
+        add(chengShiGuangChang,"chengShiGuangChang");
+        add(XiCaoChang,"XiCaoChang");
+        add(TiYuGuan,"TiYuGuan");
+        add(XiaoHuaYuan,"XiaoHuaYuan");
+        add(DiLiuChanTing,"DiLiuChanTing");
+        add(XiaoLeiYiHaoLou,"XiaoLeiYiHaoLou");
+        add(XiaoLeiErHaoLou,"XiaoLeiErHaoLou");
+        add(DiYiCanTing,"DiYiCanTing");
+        add(HuiMingCanTing,"HuiMingCanTing");
+        add(XiaoLeiSiHaoLou,"XiaoLeiSiHaoLou");
+        add(DiSanCanTing,"DiSanCanTing");
+        add(XiaoWeiShengShuo,"XiaoWeiShengShuo");
+        add(YuYanLou,"YuYanLou");
+        add(DiZhiLou,"DiZhiLou");
+        add(JiChuLou,"JiChuLou");
+        add(TuShuGuan,"TuShuGuan");
+        add(ZhongHeLou,"ZhongHeLou");
+        add(ShiYanLou,"ShiYanLou");
 
 
         container.addChildrenView(map);
     }
 
-    private void add(building building) {
+    private void add(building building,String index) {
+        building.setIndex(index);
         map.addChildrenView(building);
         map.addBuilding(building);
+        bulidingGroup.addList(index);
     }
 
     public void draw(){

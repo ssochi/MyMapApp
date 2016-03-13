@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //是否第一次运行的初始
+        IFFIRSTRUN iffirstrun = new IFFIRSTRUN();
+        iffirstrun.setIFFIRSTRUN(ifFirstRun());
+
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.Layout_Drawer);
 //        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         if(savedInstanceState == null){
@@ -37,6 +43,18 @@ public class MainActivity extends AppCompatActivity {
         initListView();
 
 
+
+    }
+
+    private boolean ifFirstRun() {
+        SharedPreferences setting = getSharedPreferences("SHARE_APP_TAG", 0);
+        Boolean user_first = setting.getBoolean("FIRST",true);
+        if(user_first){//第一次
+            setting.edit().putBoolean("FIRST", false).commit();
+            return true;
+        }else{
+            return  false;
+        }
 
     }
 

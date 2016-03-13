@@ -22,4 +22,22 @@ public class choose_static {
     public static String getChoose() {
         return choose;
     }
+
+    public static String getIndex(){
+
+        switch (choose){
+            case  "历史" :
+                return "History";
+            case  "职能" :
+                return "Job";
+            case  "活动" :
+                return "Activity";
+            case  "福利" :
+                return "Bouns";
+            case  "树洞" :
+                return "treeHoles";
+
+        }
+        return "err";
+    }
 }

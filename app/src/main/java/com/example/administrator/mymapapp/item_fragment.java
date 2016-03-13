@@ -1,5 +1,8 @@
 package com.example.administrator.mymapapp;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,9 +34,15 @@ public class item_fragment extends Fragment {
     String URl ="http://1.mapapi2233.applinzi.com/api/single/" ;
     String ContentIDURl ="http://1.mapapi2233.applinzi.com/api/list/" ;
     choose_static chooseStatic;
+    String index;
     public item_fragment(){
         ContentList = new ArrayList<>();
         ContentIdList = new ArrayList<>();
+    }
+    public item_fragment(String index){
+        ContentList = new ArrayList<>();
+        ContentIdList = new ArrayList<>();
+        this.index = index;
     }
 
     @Nullable
@@ -45,13 +54,30 @@ public class item_fragment extends Fragment {
         String[] s = new String[]{chooseStatic.getChoose()};
         title.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.card_title, R.id.line1, s));
 
-        MyAdpter = new Baseadpter_item(getActivity(),getFragmentManager(),chooseStatic.getChoose());
+
+        if(!IFFIRSTRUN.IFFIRSTRUN()){
+            List<String> list = new ArrayList<>();
+            SQLitedb db = new SQLitedb(getActivity());
+            SQLiteDatabase dbRead = db.getReadableDatabase();
+            Cursor c = dbRead.query(index+choose_static.getIndex(),null,null,null,null,null,null);
+            while(c.moveToNext()){
+                String cout = c.getString(c.getColumnIndex("Content"));
+                list.add(cout);
+            }
+            MyAdpter = new Baseadpter_item(getActivity(),getFragmentManager(),chooseStatic.getChoose(),list,index);
+        }else {
+            MyAdpter = new Baseadpter_item(getActivity(),getFragmentManager(),chooseStatic.getChoose(),index);
+        }
+
+
+
         listView = (ListView) rootView.findViewById(R.id.card_listView);
 
         /*添加头和尾*/
         listView.addHeaderView(new View(getActivity()));
         listView.addFooterView(new View(getActivity()));
 //        listView.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item_card, R.id.line1, data));
+
         listView.setAdapter(MyAdpter);
         HttpGet();
         return rootView;
@@ -100,7 +126,19 @@ public class item_fragment extends Fragment {
                    }
 
                }
-                MyAdpter = new Baseadpter_item(getActivity(),getFragmentManager(),chooseStatic.getChoose(),ContentList);
+
+                SQLitedb db = new SQLitedb(getActivity());
+                ContentValues cv = new ContentValues();
+                SQLiteDatabase dbWrite = db.getWritableDatabase();
+                dbWrite.execSQL("DELETE FROM " + index+choose_static.getIndex());
+                for (int i = 0;i<ContentList.size();i++){
+                    cv = new ContentValues();
+                    cv.put("Content", ContentList.get(i));
+                    dbWrite.insert(index+choose_static.getIndex(), null, cv);
+                }
+                dbWrite.close();
+
+                MyAdpter = new Baseadpter_item(getActivity(),getFragmentManager(),chooseStatic.getChoose(),ContentList,index);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

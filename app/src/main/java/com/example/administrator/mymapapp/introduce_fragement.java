@@ -1,5 +1,8 @@
 package com.example.administrator.mymapapp;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -39,6 +42,7 @@ public class introduce_fragement extends Fragment {
     String URlContent = "http://1.mapapi2233.applinzi.com/api/single/";
     String URlPOST = "http://1.mapapi2233.applinzi.com/api/single";
     String name;
+    String index;
     boolean init_ready = false;
     Thread httpGetThread;
     Thread HttpGetContentThread;
@@ -77,10 +81,32 @@ public class introduce_fragement extends Fragment {
         title = (ListView) rootView.findViewById(R.id.Title_lv);
         String[] s = new String[]{getInputText(getActivity().getIntent().getStringExtra("name"))};
         name = s[0];
+        index = getInputText(getActivity().getIntent().getStringExtra("index"));
         choose_static.setPosition(name);
         title.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.card_title, R.id.line2, s));
 
-        MyAdpter = new Baseadpter_IntroduceBuilding(getActivity(),getFragmentManager());
+        if(!IFFIRSTRUN.IFFIRSTRUN()){
+            List<String> list = new ArrayList<>();
+            SQLitedb db = new SQLitedb(getActivity());
+            SQLiteDatabase dbRead = db.getReadableDatabase();
+            Cursor c = dbRead.query(index,null,null,null,null,null,null);
+            while(c.moveToNext()){
+                String cout = c.getString(c.getColumnIndex("Content"));
+                list.add(cout);
+            }
+            if (list.size()<2){
+
+                MyAdpter = new Baseadpter_IntroduceBuilding(getActivity(),getFragmentManager(),index);
+            }else {
+                MyAdpter = new Baseadpter_IntroduceBuilding(getActivity(),getFragmentManager(),null,list,index);
+            }
+
+        }else {
+            MyAdpter = new Baseadpter_IntroduceBuilding(getActivity(),getFragmentManager(),index);
+        }
+
+
+
         listView = (ListView) rootView.findViewById(R.id.card_listView);
         /*添加头和尾*/
         listView.addHeaderView(new View(getActivity()));
@@ -193,14 +219,32 @@ public class introduce_fragement extends Fragment {
                         line2.add("NULL");
                     }
                 }
-                    MyAdpter = new Baseadpter_IntroduceBuilding(getActivity(),getFragmentManager(),MainList,line2);
+                MyAdpter = new Baseadpter_IntroduceBuilding(getActivity(),getFragmentManager(),MainList,line2,index);
 
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            listView.setAdapter(MyAdpter);
-                        }
-                    });
+
+
+                SQLitedb db = new SQLitedb(getActivity());
+                ContentValues cv = new ContentValues();
+                SQLiteDatabase dbWrite = db.getWritableDatabase();
+                dbWrite.execSQL("DELETE FROM " + index);
+                for (int i = 0;i<line2.size();i++){
+                    cv = new ContentValues();
+                    cv.put("Content", line2.get(i));
+                    dbWrite.insert(index, null, cv);
+                }
+                dbWrite.close();
+
+
+
+
+
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        listView.setAdapter(MyAdpter);
+                    }
+                });
 
             }
         });
@@ -235,6 +279,7 @@ public class introduce_fragement extends Fragment {
                 aa2 =  root.getString(bb2);
             }
             line2.add(aa2);
+
 
         } catch (JSONException e) {
             e.printStackTrace();

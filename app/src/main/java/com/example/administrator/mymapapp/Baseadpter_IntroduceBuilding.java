@@ -31,9 +31,10 @@ public class Baseadpter_IntroduceBuilding extends BaseAdapter {
     private LayoutInflater mInflater;//得到一个LayoutInfalter对象用来导入布局
     String URl ="http://1.mapapi2233.applinzi.com/api/single/" ;
     boolean init_ready = false;
+    String index;
 
 
-    public Baseadpter_IntroduceBuilding(Context context,FragmentManager fragmentManager,List<List<String>> list,List<String>  line2){
+    public Baseadpter_IntroduceBuilding(Context context,FragmentManager fragmentManager,List<List<String>> list,List<String>  line2,String index){
         this.context = context;
         mInflater = LayoutInflater.from(context);
         List_title = new ArrayList<>();
@@ -46,10 +47,11 @@ public class Baseadpter_IntroduceBuilding extends BaseAdapter {
         Line2List = list;
         this.line2 = line2;
         init_ready = true;
+        this.index = index;
 
 
     }
-    public Baseadpter_IntroduceBuilding(Context context,FragmentManager fragmentManager){
+    public Baseadpter_IntroduceBuilding(Context context,FragmentManager fragmentManager,String index){
         this.context = context;
         mInflater = LayoutInflater.from(context);
         List_title = new ArrayList<>();
@@ -60,6 +62,7 @@ public class Baseadpter_IntroduceBuilding extends BaseAdapter {
         List_title.add("树洞");
         this.fragmentManager = fragmentManager;
         init_ready = false;
+        this.index = index;
 
     }
 
@@ -97,7 +100,7 @@ public class Baseadpter_IntroduceBuilding extends BaseAdapter {
             public void onClick(View v) {
 
                 choose_static.setChoose(List_title.get(position));
-                fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.container, new item_fragment()).commit();
+                fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.container, new item_fragment(index)).commit();
 
 
             }

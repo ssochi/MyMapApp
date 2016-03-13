@@ -36,6 +36,7 @@ public class building extends Map {
     Intent intent;
     int textSize = 50;
     boolean CanOclick ;
+    String index ="";
 
 
 
@@ -52,6 +53,7 @@ public class building extends Map {
         this.name = name ;
         intent = new Intent(context,buildingIntroduceActivity.class);
         intent.putExtra("name",name);
+
         this.degrees = degrees;
         this.CanOclick = CanOclick;
     }
@@ -66,6 +68,11 @@ public class building extends Map {
 //
 //    }
 
+
+    public void setIndex(String index) {
+        this.index = index;
+        intent.putExtra("index",index);
+    }
 
     @Override
     public void childrenView(Canvas canvas) {

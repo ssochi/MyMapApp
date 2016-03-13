@@ -23,22 +23,25 @@ public class Baseadpter_item extends BaseAdapter {
     List<String> line2;
     private LayoutInflater mInflater;//得到一个LayoutInfalter对象用来导入布局
     int num_user ;
-    public Baseadpter_item(Context context,FragmentManager fragmentManager,String name){
+    String index;
+    public Baseadpter_item(Context context,FragmentManager fragmentManager,String name,String index){
         this.context = context;
         mInflater = LayoutInflater.from(context);
         num_user = 1 + (int)  (Math.random()*10);
         this.fragmentManager = fragmentManager;
         init_ready = false;
         this.name = name;
+        this.index = index;
 
     }
-    public Baseadpter_item(Context context,FragmentManager fragmentManager,String name,List<String> line2){
+    public Baseadpter_item(Context context,FragmentManager fragmentManager,String name,List<String> line2,String index){
         this.context = context;
         mInflater = LayoutInflater.from(context);
         num_user = 1 + (int)  (Math.random()*10);
         this.name = name;
         this.line2 = line2;
         init_ready = true;
+        this.index = index;
 
     }
 
