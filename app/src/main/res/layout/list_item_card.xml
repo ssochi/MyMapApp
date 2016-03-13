@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:descendantFocusability="beforeDescendants"><!-- 为突出卡片效果，需设置左右padding,上下通过listView的divider设置 -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingRight="15dp"
+        android:background="@drawable/card_background_selector"
+        android:descendantFocusability="afterDescendants"><!-- 给每个item增加background -->
+        <TextView
+            android:id="@+id/line1"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:textSize="35dp"
+            android:text="text"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="NULL"
+            android:textSize="15dp"
+            android:id="@+id/line2"
+            android:layout_below="@+id/line1"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+
+
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line2"
+            android:layout_alignRight="@+id/line2"
+            android:layout_alignEnd="@+id/line2"
+            >
+
+            <Button
+                android:layout_width="160dp"
+                android:layout_height="match_parent"
+                android:text="添加"
+                style="?android:attr/buttonBarStyle"
+                android:id="@+id/btnAdd"
+                android:textColor="#df52a0"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+            <Button
+                android:layout_width="160dp"
+                android:layout_height="match_parent"
+                android:textColor="#df52a0"
+                android:text="查看"
+                style="?android:attr/buttonBarStyle"
+                android:id="@+id/btnMore"
+                 />
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>
